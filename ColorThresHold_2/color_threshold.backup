@@ -1,0 +1,82 @@
+#include "opencv2/imgproc.hpp"
+#include "opencv2/highgui.hpp"
+#include <iostream>
+#include <stdlib.h>
+using namespace std;
+using namespace cv;
+
+//GBR Color tuner
+void on_low_r_thresh_trackbar(int, void *);
+void on_high_r_thresh_trackbar(int, void *);
+void on_low_g_thresh_trackbar(int, void *);
+void on_high_g_thresh_trackbar(int, void *);
+void on_low_b_thresh_trackbar(int, void *);
+void on_high_b_thresh_trackbar(int, void *);
+
+//HSV Color tuner
+void on_low_h_thresh_trackbar(int, void *);
+void on_high_h_thresh_trackbar(int, void *);
+void on_low_s_thresh_trackbar(int, void *);
+void on_high_s_thresh_trackbar(int, void *);
+void on_low_v_thresh_trackbar(int, void *);
+void on_high_v_thresh_trackbar(int, void *);
+
+//Initial GBR color tuner
+int low_r=20, low_g=20, low_b=10;
+int high_r=88, high_g=77, high_b=136;
+
+//Initial HSV color tuner
+int low_h =0, low_s = 0, low_v = 0;
+int high_h = 100, high_s = 100, high_v = 100;
+
+//Image path
+const string img_path = "/home/teeramoo/Desktop/ORB-slam-script/Using Opecv3.2/Line Segment Detector/Sequence_images_color/color00000452.png";
+
+//Video path
+const string vid_path = "/home/teeramoo/Desktop/11May2017-Survey/2017-05-11_13_29_49.mkv";
+
+int main()
+{
+    Mat frame, frameHSV, frameBGR, frame_thresholdHSV, frame_threshold;
+//	frame = imread(img_path);	
+    VideoCapture cap(vid_path);
+//    VideoCapture cap(1);
+    namedWindow("Video Capture", WINDOW_NORMAL);
+    namedWindow("RGB Detection", WINDOW_NORMAL);
+    namedWindow("HSV Detection", WINDOW_NORMAL);
+    //-- Trackbars to set thresholds for RGB values
+    createTrackbar("Low R","RGB Detection", &low_r, 255, on_low_r_thresh_trackbar);
+    createTrackbar("High R","RGB Detection", &high_r, 255, on_high_r_thresh_trackbar);
+    createTrackbar("Low G","RGB Detection", &low_g, 255, on_low_g_thresh_trackbar);
+    createTrackbar("High G","RGB Detection", &high_g, 255, on_high_g_thresh_trackbar);
+    createTrackbar("Low B","RGB Detection", &low_b, 255, on_low_b_thresh_trackbar);
+    createTrackbar("High B","RGB Detection", &high_b, 255, on_high_b_thresh_trackbar);
+
+    //-- Trackbars to set thresholds for HSV values
+    createTrackbar("Low H","HSV Detection", &low_h, 179, on_low_h_thresh_trackbar);
+    createTrackbar("High H","HSV Detection", &high_h, 179, on_high_h_thresh_trackbar);
+    createTrackbar("Low S","HSV Detection", &low_s, 255, on_low_s_thresh_trackbar);
+    createTrackbar("High S","HSV Detection", &high_s, 255, on_high_s_thresh_trackbar);
+    createTrackbar("Low V","HSV Detection", &low_v, 255, on_low_v_thresh_trackbar);
+    createTrackbar("High V","HSV Detection", &high_v, 255, on_high_v_thresh_trackbar);
+
+    while((char)waitKey(1)!='q'){
+        cap>>frame;
+        if(frame.empty())
+            break;
+
+	cvtColor(frame, frameHSV, CV_BGR2HSV);	
+	inRange(frameHSV,Scalar(low_h,low_s,low_v), Scalar(high_h,high_s,high_v),frame_thresholdHSV);
+	
+//	cvtColor(frame_thresholdHSV, frameBGR, CV_HSV2BGR);
+	
+        //-- Detect the object based on RGB Range Values
+       inRange(frame,Scalar(low_b,low_g,low_r), Scalar(high_b,high_g,high_r),frame_threshold);
+        //-- Show the frames
+        imshow("Video Capture",frame);
+        imshow("RGB Detection",frame_threshold);
+	imshow("HSV Detection",frame_thresholdHSV);
+	waitKey(100);
+    }
+    return 0;
+}

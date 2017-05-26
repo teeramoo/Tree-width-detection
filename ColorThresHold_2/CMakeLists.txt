@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 2.8)
+set (CMAKE_CXX_STANDARD 11)
+project( color_threshold )
+find_package( OpenCV 3.2.0 REQUIRED )
+add_executable( color_threshold color_threshold.cpp )
+target_link_libraries( color_threshold ${OpenCV_LIBS} )

@@ -1,0 +1,3 @@
+/home/teeramoo/Desktop/ORB-slam-script/Using Opecv3.2/ColorThresHold_2/build/CMakeFiles/edit_cache.dir
+/home/teeramoo/Desktop/ORB-slam-script/Using Opecv3.2/ColorThresHold_2/build/CMakeFiles/rebuild_cache.dir
+/home/teeramoo/Desktop/ORB-slam-script/Using Opecv3.2/ColorThresHold_2/build/CMakeFiles/color_threshold.dir
